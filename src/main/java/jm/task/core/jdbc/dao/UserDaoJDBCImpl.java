@@ -8,12 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl extends Util implements UserDao {
+
+    private final Connection connection = getConnection();
+
     public UserDaoJDBCImpl() {
 
     }
 
     public void createUsersTable() {
-        try(Connection connection = getConnection(); Statement statement = getConnection().createStatement()) {
+        try(Statement statement = getConnection().createStatement()) {
 
             String sql = "CREATE TABLE IF NOT EXISTS USERS " +
                     "(id INTEGER not NULL AUTO_INCREMENT, " +
@@ -30,7 +33,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void dropUsersTable() {
-        try(Connection connection = getConnection();Statement statement = getConnection().createStatement()) {
+        try(Statement statement = getConnection().createStatement()) {
 
             String sql = "DROP TABLE IF EXISTS USERS";
 
@@ -42,7 +45,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try(Connection connection = getConnection(); Statement statement = getConnection().createStatement()) {
+        try(Statement statement = getConnection().createStatement()) {
             System.out.println("Inserting records into the table USERS");
 
             String sql = "INSERT INTO USERS(name, lastname, age) VALUE ('"+name+"','"+lastName+"','"+age+"')";
@@ -64,7 +67,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void removeUserById(long id) {
-        try(Connection connection = getConnection()) {
+        try {
 
             String sql = "DELETE FROM USERS " +
                     "WHERE id = ?";
@@ -75,6 +78,12 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -105,7 +114,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try(Connection connection = getConnection();Statement statement = getConnection().createStatement()) {
+        try(Statement statement = getConnection().createStatement()) {
 
             String sql = "TRUNCATE TABLE USERS";
 
