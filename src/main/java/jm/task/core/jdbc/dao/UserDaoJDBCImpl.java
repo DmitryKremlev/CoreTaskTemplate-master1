@@ -16,7 +16,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void createUsersTable() {
-        try(Statement statement = getConnection().createStatement()) {
+        try(Statement statement = connection.createStatement()) {
 
             String sql = "CREATE TABLE IF NOT EXISTS USERS " +
                     "(id INTEGER not NULL AUTO_INCREMENT, " +
@@ -33,7 +33,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void dropUsersTable() {
-        try(Statement statement = getConnection().createStatement()) {
+        try(Statement statement = connection.createStatement()) {
 
             String sql = "DROP TABLE IF EXISTS USERS";
 
@@ -45,7 +45,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try(Statement statement = getConnection().createStatement()) {
+        try(Statement statement = connection.createStatement()) {
             System.out.println("Inserting records into the table USERS");
 
             String sql = "INSERT INTO USERS(name, lastname, age) VALUE ('"+name+"','"+lastName+"','"+age+"')";
@@ -94,7 +94,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
 
         //Statement statement = null;
 
-        try (Statement statement = getConnection().createStatement()){
+        try (Statement statement = connection.createStatement()){
             ResultSet resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
@@ -114,7 +114,7 @@ public class UserDaoJDBCImpl extends Util implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try(Statement statement = getConnection().createStatement()) {
+        try(Statement statement = connection.createStatement()) {
 
             String sql = "TRUNCATE TABLE USERS";
 
